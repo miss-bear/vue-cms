@@ -4,17 +4,17 @@
     <!-- 轮播图区域 -->
     <mt-swipe :auto="4000">
       <!-- 在组件中，使用v-for循环的话，一定要使用 key -->
-      <mt-swipe-item v-for="item in lunbotuList" :key="item.url">
-        <img :src="item.img" alt="">
+      <mt-swipe-item v-for="item in lunbotuList" :key="item.id">
+        <img :src="item.pic" alt="">
       </mt-swipe-item>
     </mt-swipe>
 
 
     <!-- 九宫格 到 6宫格 的改造工程 -->
     <ul class="mui-table-view mui-grid-view mui-grid-9">
-      <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
+      <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><router-link to="/home/newsList">
               <img src="../../images/menu1.png" alt="">
-              <div class="mui-media-body">新闻资讯</div></a></li>
+              <div class="mui-media-body">新闻资讯</div></router-link></li>
       <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
               <img src="../../images/menu2.png" alt="">
               <div class="mui-media-body">图片分享</div></a></li>
@@ -41,20 +41,34 @@ import { Toast } from "mint-ui";
 export default {
   data() {
     return {
-      lunbotuList: [] // 保存轮播图的数组
+      // lunbotuList: [] // 保存轮播图的数组
+      lunbotuList: [{
+        id:1,
+        pic:'http://img0.imgtn.bdimg.com/it/u=1009343015,3471930017&fm=26&gp=0.jpg'
+      },{
+        id: 2,
+        pic:'http://img3.imgtn.bdimg.com/it/u=1500868681,3841300386&fm=26&gp=0.jpg'
+      },{
+        id: 3,
+        pic: 'http://img5.imgtn.bdimg.com/it/u=49682395,1062686824&fm=11&gp=0.jpg'
+      }] // 保存轮播图的数组
     };
   },
   created() {
-    this.getLunbotu();
+    // this.getLunbotu();
   },
   methods: {
     getLunbotu() {
       // 获取轮播图数据的方法
-      this.$http.get("http://vue.studyit.io/api/getlunbo").then(result => {
-        // console.log(result.body);
-        if (result.body.status === 0) {
+      // this.$http.get("http://vue.studyit.io/api/getlunbo").then(result => {
+
+      this.$http.get("http://www.phonegap100.com/appapi.php?a=getPortalList&catid=20&page=2").then(result => {
+         console.log(result.body);
+         console.log(result.body.result);
+        // if (result.body.status === 0) {
+        if (result.body.result) {
           // 成功了
-          this.lunbotuList = result.body.message;
+          this.lunbotuList = result.body.result;
         } else {
           // 失败的
           Toast("加载轮播图失败。。。");
